@@ -1,6 +1,6 @@
 #CBfixed { position: fixed; left: 0; bottom: 0; z-index: 99999; }
 #CBbtn { display: block; padding: 6px 10px; background-color: #F90; color: white; font-size: 18px; }
-#CBdiv { border: solid 1px gray; box-shadow: 0 0 4px gray; }
+#CBdiv { border: solid 1px gray; box-shadow: 0 0 4px gray; max-height: calc(100vh - 35px); overflow-y: auto; }
 
 #CBtable th { cursor: pointer; }
 #CBtable td,

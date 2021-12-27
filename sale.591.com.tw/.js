@@ -1,27 +1,36 @@
 $(function(){
-	setTimeout(function() {
-		$('body').append(`
-			<div id="CBfixed">
-				<button id="CBbtn" onclick="cb_datchData()" js-popTarget="#CBdiv">TB</button>
-				<div id="CBdiv" style="display: none"></div>
-			</div>
-		`)
-		new PopupTargets
-	});
+	$('body').append(`
+		<div id="CBfixed">
+			<button id="CBbtn" js-popTarget="#CBdiv">TB</button>
+			<div id="CBdiv" style="display: none"></div>
+		</div>
+	`)
+	new PopupTargets
 })
 
+$(document).on('click', '#CBbtn', cb_vmWatch )
+
+function cb_vmWatch(){
+	cb_datchData()
+	vm.$watch('listData', ()=>{
+		cb_datchData()
+	})
+	$(document).off('click', '#CBbtn', cb_vmWatch )
+}
 
 function cb_datchData(){
 	// $('#CBdiv').toggle()
 	console.log(vm._data.listData)
 	let tr = ""
 	$.each( vm._data.listData, function(idx,ele){
-		let td  = `<td><a target="_blank" href="https://rent.591.com.tw/home/${ele.post_id}">${ele.title}</a></td>`
-			td += `<td>${ele.location}</td>`
-			td += `<td>${ele.floor_str}</td>`
-			td += `<td>${ele.surrounding.desc = ele.surrounding.type === "subway_station" ? ele.surrounding.desc : "" }</td>`
-			td += `<td>${ele.surrounding.distance = ele.surrounding.type === "subway_station" ? ele.surrounding.distance.replace('公尺','') : "" }</td>`
-			td += `<td>${ele.price}</td>`
+		let td  = `<td><a target="_blank" href="https://sale.591.com.tw/home/house/detail/${ele.type}/${ele.houseid}.html">${ele.title}</a></td>`
+			td += `<td>${ele.section_name||''}-${ele.address||''}</td>`
+			td += `<td>${ele.area||''}坪</td>`
+			td += `<td>${ele.mainarea||''}坪</td>`
+			td += `<td>${ele.showhouseage||''}</td>`
+			td += `<td>${ele.floor||''}</td>`
+			td += `<td>${ele.unit_price||''}</td>`
+			td += `<td>${ele.price||''} 萬</td>`
 		tr += `<tr>${td}</tr>`
 	})
 	
@@ -31,10 +40,12 @@ function cb_datchData(){
 				<tr>
 					<th onclick="sortTable(0)">標題</th>
 					<th onclick="sortTable(1)">地點</th>
-					<th onclick="sortTable(2)">樓層</th>
-					<th onclick="sortTable(3)">捷運</th>
-					<th onclick="sortTable(4)">距離</th>
-					<th onclick="sortTable(5)">價格</th>
+					<th onclick="sortTable(2)">權狀</th>
+					<th onclick="sortTable(3)">主建</th>
+					<th onclick="sortTable(4)">屋齡</th>
+					<th onclick="sortTable(5)">樓層</th>
+					<th onclick="sortTable(6)">價格/坪</th>
+					<th onclick="sortTable(7)">價格</th>
 				</tr>
 			</thead>
 			<tbody>
