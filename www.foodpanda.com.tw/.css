@@ -1,21 +1,7 @@
 .product-button-overlay { width: calc( 100% - 125px ) !important; }
-.item-react-root .photo { cursor: pointer !important; }
+.dish-card-image .lazy-loaded-dish-photo { cursor: pointer !important; }
 ._photoShow { position: fixed; z-index: 15; left: 50%; top: 50%; transform: translate(-50%,-50%); 
 width: 100%; height: 100%; background: rgba(0,0,0,.15) center center no-repeat; background-size: contain; }
 
-
-.CB_fixed { position: fixed; left: 0; bottom: 0; z-index: 999; background: #fff; }
-.CB_btn { position: fixed; left: 0; bottom: 0; z-index: 1; background: #161; color: #fff; font-size: 24px; padding: 6px 12px; }
-.CB_div { height: 100vh; overflow: auto; }
-
-.bodyNowrap { height: 100vh; overflow: hidden; }
-.CB_div .title { font-size: 24px; font-weight: bold; padding: 15px 5px 5px 5px; text-shadow: 0 0 16px #ccf; }
-.CB_div .bgImg { position: relative; height: 50vh; width: 25%; background: center center no-repeat; background-size: contain; }
-.CB_div .bgTxt { font-size: 20px; font-weight: bold; text-align: center; padding: 15px 5px 5px 5px; text-shadow: 0 0 10px yellow; }
-
-@media( max-width: 1000px ){
-	.CB_div .bgImg { width: 33%; }
-}
-@media( max-width: 750px ){
-	.CB_div .bgImg { width: 50%; }
-}
+.cart-summary-footer { position: relative; }
+#CB_copyCart { background: #eee; padding: 2px 4px; position: absolute; bottom: 100%; }
