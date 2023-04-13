@@ -1,10 +1,17 @@
 #CBfixed { position: fixed; left: 0; bottom: 0; z-index: 99991; }
-.CBbtn { padding: 6px 10px; background-color: #F90; color: white; font-size: 18px; }
+.CBbtn { padding: 5px 10px; background-color: #F90; color: white; font-size: 18px; }
 #CBdiv { border: solid 1px gray; box-shadow: 0 0 4px gray; max-height: calc(100vh - 35px); overflow-y: auto; }
 
 #CBtable th { cursor: pointer; }
-#CBtable td,
-#CBtable th { padding: 4px 10px; }
+#CBtable td, #CBtable th { padding: 4px 10px; }
 
 #CBtable tr:nth-child(2n) { background: #f2f2f2; }
 #CBtable tr:nth-child(2n+1) { background: #fbfbfb; }
+
+#CBtable .imgTd { position: relative; }
+#CBtable .imgTd > ._img_sm,
+#CBtable .imgTd > ._img_lg { position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
+
+#CBtable .imgTd > ._img_sm { left: 10px; }
+#CBtable .imgTd > ._img_lg { left: 100%; display: none; }
+#CBtable .imgTd > ._img_sm:hover + ._img_lg { display: block; z-index: 1; }

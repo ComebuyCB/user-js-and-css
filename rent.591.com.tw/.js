@@ -4,8 +4,8 @@ $(function(){
 			<div id="CBfixed">
 				<div style="display: flex">
 					<button class="CBbtn" onclick="$('#CBdiv').toggle()">TB</button>
-					<button class="CBbtn js-prev" onclick="$('.pagePrev').not('.last').children().click();">←</button>
-					<button class="CBbtn js-next" onclick="$('.pageNext').not('.last').children().click();">→</button>
+					<button class="CBbtn js-prev" onclick="$('.pagePrev').children().click();">←</button>
+					<button class="CBbtn js-next" onclick="$('.pageNext').children().click();">→</button>
 				</div>
 				<div id="CBdiv" style="display: none"></div>
 			</div>
@@ -15,7 +15,7 @@ $(function(){
 })
 
 
-function cb_afterRender( To ){
+function cb_afterRender(){
 	let t1 = setTimeout(()=>{
 		if ( $('#j-loading').css('display') === 'none' ){
 			cb_getData()
@@ -33,28 +33,46 @@ function cb_afterRender( To ){
 function cb_getData(){
 	console.log(vm._data.listData)
 	let tr = ""
-	$.each( vm._data.listData, function(idx,ele){
-		let td  = `
-			<td><a target="_blank" href="https://rent.591.com.tw/home/${ele.post_id}">${ele.title}</a></td>
-			<td>${ele.location}</td>
-			<td>${ele.floor_str}</td>
-			<td>${ele.surrounding.desc = ele.surrounding.type === "subway_station" ? ele.surrounding.desc : "" }</td>
-			<td>${ele.surrounding.distance = ele.surrounding.type === "subway_station" ? ele.surrounding.distance.replace('公尺','') : "" }</td>
-			<td>${+ele.price.replace(',','')}</td>
+	$.each(vm._data.listData, function(idx,ele){
+		let { type, desc, distance } = ele.surrounding
+		distance = distance ? distance.replace('公尺','') : ""
+		if ( distance && distance > 1200 ){ return true }
+		
+		tr += `
+			<tr>
+				<td class="imgTd">
+					<img class="_img_sm" src="${ele.photo_list[0]}" height="28">
+					<img class="_img_lg" src="${ele.photo_list[0]}" height="150">
+				</td>
+				<td><a target="_blank" href="https://rent.591.com.tw/home/${ele.post_id}">${ele.title}</a></td>
+				<td>${ele.kind_name}</td>
+				<td>${ele.location}</td>
+				<td>${ele.floor_str}</td>
+				<td>${desc || ""}</td>
+				<td>${distance || ""}</td>
+				<td>${+ele.price.replace(',','')}</td>
+				<td>${ele.role_name}</td>
+				<td>${ele.area}</td>
+				<td>${ele.refresh_time}</td>
+			</tr>
 		`
-		tr += `<tr>${td}</tr>`
 	})
 	
 	$('#CBdiv').html(`
 		<table id="CBtable">
 			<thead>
 				<tr>
+					<th>圖片</th>
 					<th>標題</th>
+					<th>房型</th>
 					<th>地點</th>
 					<th>樓層</th>
 					<th>捷運</th>
 					<th>距離</th>
 					<th>價格</th>
+					<th>人物</th>
+					<th>坪數</th>
+					<th>更新</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -65,33 +83,22 @@ function cb_getData(){
 	
 	sortTable()
 	
-	if ( $('.pagePrev').hasClass('first') ){
-		$('.CBbtn.js-prev').hide()
-	}else{
-		$('.CBbtn.js-prev').show()
-	}
-	
-	if ( $('.pageNext').hasClass('last') ){
-		$('.CBbtn.js-next').hide()
-	}else{
-		$('.CBbtn.js-next').show()
-	}
+	$('.CBbtn.js-prev').css('display', $('.pagePrev').hasClass('first') ? 'none' : 'block' )
+	$('.CBbtn.js-next').css('display', $('.pageNext').hasClass('last') ? 'none' : 'block' )
 }
 
 
 function sortTable(){
 	const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-	
 	const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
-	    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
-	    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
-	
+		v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+		)(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
 	// do the work...
 	document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-	  const table = th.closest('table');
-	  const tbody = table.querySelector('tbody');
-	  Array.from(tbody.querySelectorAll('tr'))
-	    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-	    .forEach(tr => tbody.appendChild(tr) );
+		const table = th.closest('table');
+		const tbody = table.querySelector('tbody');
+		Array.from(tbody.querySelectorAll('tr'))
+			.sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+			.forEach(tr => tbody.appendChild(tr) );
 	})))
 }
