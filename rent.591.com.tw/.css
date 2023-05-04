@@ -3,7 +3,7 @@
 #CBdiv { border: solid 1px gray; box-shadow: 0 0 4px gray; max-height: calc(100vh - 35px); overflow-y: auto; }
 
 #CBtable th { cursor: pointer; }
-#CBtable td, #CBtable th { padding: 4px 10px; }
+#CBtable td, #CBtable th { padding: 4px 8px; }
 
 #CBtable tr:nth-child(2n) { background: #f2f2f2; }
 #CBtable tr:nth-child(2n+1) { background: #fbfbfb; }
@@ -12,6 +12,6 @@
 #CBtable .imgTd > ._img_sm,
 #CBtable .imgTd > ._img_lg { position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
 
-#CBtable .imgTd > ._img_sm { left: 10px; }
+#CBtable .imgTd > ._img_sm { left: 6px; }
 #CBtable .imgTd > ._img_lg { left: 100%; display: none; }
 #CBtable .imgTd > ._img_sm:hover + ._img_lg { display: block; z-index: 1; }

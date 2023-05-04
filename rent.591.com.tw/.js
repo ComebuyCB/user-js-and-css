@@ -1,5 +1,16 @@
+// 此網站已有 jQuery1.9
+
 $(function(){
-	if ( window.location.href.indexOf('rent.591.com.tw/home') == -1 ){
+	if ( window.location.href.indexOf('rent.591.com.tw/home') > -1 ){
+		$(document).on('keydown',(evt)=>{
+			if (evt.key === "ArrowRight"){
+				$('.photos-detail').find('.next-btn').click();
+			}
+			if (evt.key === "ArrowLeft"){
+				$('.photos-detail').find('.prev-btn').click();
+			}
+		})
+	} else {
 		$('body').append(`
 			<div id="CBfixed">
 				<div style="display: flex">
@@ -33,7 +44,18 @@ function cb_afterRender(){
 function cb_getData(){
 	console.log(vm._data.listData)
 	let tr = ""
-	$.each(vm._data.listData, function(idx,ele){
+	let da = [...vm._data.listData]
+	da.sort((a,b)=> {
+		let x = +a.surrounding.distance.replace('公尺','')
+		let y = +b.surrounding.distance.replace('公尺','')
+		if ( x < y ){
+			return -1
+		} else if ( x > y ){
+			return 1
+		}
+		return 0
+	})
+	$.each(da, function(idx,ele){
 		let { type, desc, distance } = ele.surrounding
 		distance = distance ? distance.replace('公尺','') : ""
 		if ( distance && distance > 1200 ){ return true }
@@ -41,7 +63,9 @@ function cb_getData(){
 		tr += `
 			<tr>
 				<td class="imgTd">
-					<img class="_img_sm" src="${ele.photo_list[0]}" height="28">
+					<a class="_img_sm" target="_blank" href="https://rent.591.com.tw/home/${ele.post_id}">
+						<img src="${ele.photo_list[0]}" height="28">
+					</a>
 					<img class="_img_lg" src="${ele.photo_list[0]}" height="150">
 				</td>
 				<td><a target="_blank" href="https://rent.591.com.tw/home/${ele.post_id}">${ele.title}</a></td>
